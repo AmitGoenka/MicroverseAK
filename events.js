@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const _ = require('lodash');
 
 function Event(id, title, desc, date) {
   this.id = id;
@@ -42,6 +43,12 @@ router.put('/:id', (request, response, next) => {
       response.send(curr);
     }
   });
+})
+
+router.delete('/:id', (request, response, next) => {
+  const id = parseInt(request.params.id);
+  _.remove(arr, x => x.id === id)
+  response.send(arr);
 })
 
 
