@@ -33,7 +33,6 @@ router.post('/', (request, response, next) => {
 
 router.put('/:id', (request, response, next) => {
   const id = parseInt(request.params.id);
-  // const req = JSON.stringify(request.body);
   const req = request.body;
   arr.forEach(curr => {
     if(curr.id === id) {
@@ -42,10 +41,7 @@ router.put('/:id', (request, response, next) => {
       if(req.date) curr.date = req.date;
       response.send(curr);
     }
-  }
-});
-
-
+  });
 })
 
 
