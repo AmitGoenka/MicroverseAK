@@ -31,4 +31,22 @@ router.post('/', (request, response, next) => {
   response.send(arr[arr.length - 1]);
 });
 
+router.put('/:id', (request, response, next) => {
+  const id = parseInt(request.params.id);
+  // const req = JSON.stringify(request.body);
+  const req = request.body;
+  arr.forEach(curr => {
+    if(curr.id === id) {
+      if(req.title) curr.title = req.title;
+      if(req.description) curr.desc = req.description;
+      if(req.date) curr.date = req.date;
+      response.send(curr);
+    }
+  }
+});
+
+
+})
+
+
 module.exports = router;
