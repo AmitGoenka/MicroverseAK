@@ -75,3 +75,24 @@ describe('/PUT', () => {
       });
   });
 });
+
+describe('/DELETE', () => {
+  it('delete event', (done) => {
+    const id = 1;
+    // const event = { id: id, title: 'title 50', description: 'desc 50', date: new Date().toString() };
+    chai.request(app)
+      .delete(`/events/${id}`)
+      .then(data => {
+        // console.log(data.body);
+        // console.log(event);
+      data.body.forEach(curr => {
+        expect(curr).to.not.include.keys(id);
+      })
+        done();
+      })
+      .catch(err => {
+        console.log('err: ' + err);
+        done();
+      });
+  });
+});
