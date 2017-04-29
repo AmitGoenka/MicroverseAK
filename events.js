@@ -17,14 +17,14 @@ for(let i = 0; i < 10; i++) {
 
 router.get('/', (request, response, next) => {
   response.send(arr);
-})
+});
 
 router.get('/:id', (request, response, next) => {
   const id = parseInt(request.params.id);
   response.send(arr.filter(x => {
     return x.id === id;
   }));
-})
+});
 
 router.post('/', (request, response, next) => {
   newEvent = new Event(request.body.id, request.body.title, request.body.description, request.body.date);
@@ -43,13 +43,13 @@ router.put('/:id', (request, response, next) => {
       response.send(curr);
     }
   });
-})
+});
 
 router.delete('/:id', (request, response, next) => {
   const id = parseInt(request.params.id);
   _.remove(arr, x => x.id === id)
   response.send(arr);
-})
+});
 
 
 module.exports = router;
