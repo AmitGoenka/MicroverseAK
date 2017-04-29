@@ -25,7 +25,8 @@ describe('/GET', () => {
       .then((data) => {
         expect(data.body[0]).to.not.be.null;
         expect(data.body[0].title).to.equal('title 1');
-        expect(data.body).to.deep.equal([ { id: 1, title: 'title 1', description: 'desc 1', date: 'date 1' } ]);
+        expect(data.body[0].description).to.equal('desc 1');
+        // expect(data.body).to.deep.equal([ { id: 1, title: 'title 1', description: 'desc 1'} ]);
         done();
       })
       .catch(err => {
@@ -37,12 +38,34 @@ describe('/GET', () => {
 
 describe('/POST', () => {
   it('create event', (done) => {
-    var event = { id: 50, title: 'title 50', description: 'desc 50', date: 'date 50' };
+    const event = { id: 50, title: 'title 50', description: 'desc 50', date: new Date().toString() };
     chai.request(app)
       .post('/events/')
       .send(event)
       .then(data => {
+        // console.log(data.body);
+        // console.log(event);
         expect(data.body).to.not.be.null;
+        expect(data.body).to.deep.equal(event);
+        done();
+      })
+      .catch(err => {
+        console.log('err: ' + err);
+        done();
+      });
+  });
+});
+
+describe('/PUT', () => {
+  it('update event', (done) => {
+    const id = 1;
+    const event = { id: id, title: 'title 50', description: 'desc 50', date: new Date().toString() };
+    chai.request(app)
+      .put(`/events/${id}`)
+      .send(event)
+      .then(data => {
+        // console.log(data.body);
+        // console.log(event);
         expect(data.body).to.deep.equal(event);
         done();
       })

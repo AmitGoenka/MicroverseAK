@@ -12,7 +12,7 @@ function Event(id, title, desc, date) {
 let arr = [];
 
 for(let i = 0; i < 10; i++) {
-  arr.push(new Event(i, `title ` + i, 'desc ' + i, 'date ' + i));
+  arr.push(new Event(i, `title ` + i, 'desc ' + i, new Date().toString()));
 }
 
 router.get('/', (request, response, next) => {
@@ -38,7 +38,7 @@ router.put('/:id', (request, response, next) => {
   arr.forEach(curr => {
     if(curr.id === id) {
       if(req.title) curr.title = req.title;
-      if(req.description) curr.desc = req.description;
+      if(req.description) curr.description = req.description;
       if(req.date) curr.date = req.date;
       response.send(curr);
     }
