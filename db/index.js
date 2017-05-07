@@ -17,7 +17,8 @@ const assert = require('assert');
 
 const dbUrl = 'mongodb://localhost:27017/microverse';
 
-MongoClient.connect(dbUrl, function(err, db) {
+var insert = function() {
+  MongoClient.connect(dbUrl, function(err, db) {
   assert.equal(null, err);
   console.log('Connected succesfully to database');
 
@@ -25,3 +26,8 @@ MongoClient.connect(dbUrl, function(err, db) {
     db.close();
   })
 });
+}
+
+module.exports = {
+  insert
+}

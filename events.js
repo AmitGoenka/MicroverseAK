@@ -1,9 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
+const db = require('./db/index.js');
 
 function Event(id, title, desc, date) {
   this.id = id;
+  this.title = title;
+  this.description = desc;
+  this.date = date;
+}
+
+function MongoEvent(title, desc, date) {
   this.title = title;
   this.description = desc;
   this.date = date;
@@ -27,9 +34,13 @@ router.get('/:id', (request, response, next) => {
 });
 
 router.post('/', (request, response, next) => {
-  newEvent = new Event(request.body.id, request.body.title, request.body.description, request.body.date);
-  arr.push(newEvent);
-  response.send(arr[arr.length - 1]);
+  console.log("post")
+  // newEvent = new Event(request.body.id, request.body.title, request.body.description, request.body.date);
+  // arr.push(newEvent);
+  // response.send(arr[arr.length - 1]);
+  // newEvent = new MongoEvent(request.body.title, request.body.description, request.body.date);
+  db.insert();
+  response.send("Response sent");
 });
 
 router.put('/:id', (request, response, next) => {
