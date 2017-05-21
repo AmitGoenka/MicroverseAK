@@ -38,8 +38,12 @@ router.post('/', (request, response, next) => {
   // newEvent = new Event(request.body.id, request.body.title, request.body.description, request.body.date);
   // arr.push(newEvent);
   // response.send(arr[arr.length - 1]);
-  // newEvent = new MongoEvent(request.body.title, request.body.description, request.body.date);
-  db.insert();
+  var newEvent = new MongoEvent(request.body.title, request.body.description, request.body.date);
+  var newEventArray = [];
+  newEventArray.push(newEvent);
+  console.log(newEventArray);
+
+  db.insert(newEventArray);
   response.send("Response sent");
 });
 
