@@ -48,16 +48,25 @@ router.post('/', (request, response, next) => {
 });
 
 router.put('/:id', (request, response, next) => {
-  const id = parseInt(request.params.id);
+  // const id = parseInt(request.params.id);
+  // const req = request.body;
+  // arr.forEach(curr => {
+  //   if(curr.id === id) {
+  //     if(req.title) curr.title = req.title;
+  //     if(req.description) curr.description = req.description;
+  //     if(req.date) curr.date = req.date;
+  //     response.send(curr);
+  //   }
+  // });
+
+  console.log("PUT")
+
+  const id = request.params.id;
   const req = request.body;
-  arr.forEach(curr => {
-    if(curr.id === id) {
-      if(req.title) curr.title = req.title;
-      if(req.description) curr.description = req.description;
-      if(req.date) curr.date = req.date;
-      response.send(curr);
-    }
-  });
+
+  db.update(id, req);
+  response.send("Response sent");
+
 });
 
 router.delete('/:id', (request, response, next) => {

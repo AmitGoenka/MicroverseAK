@@ -21,18 +21,27 @@ var con = (action) => {
   MongoClient.connect(dbUrl, function(err, db) {
     assert.equal(null, err);
     console.log('Connected succesfully to database');
-    action();
+    action(db);
   });
 }
 
 var insert = function(data) {
-  con(() => {
+  con((db) => {
     model.insertDocuments(db, function() {
       db.close();
     }, data);
   })
 }
 
+var update = function(matcher, data) {
+  con((db) => {
+    model.updateDocuments(db, function() {
+      db.close();
+    }, matcher, data);
+  })
+}
+
 module.exports = {
-  insert
+  insert,
+  update
 }
