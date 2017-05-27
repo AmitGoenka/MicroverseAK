@@ -22,6 +22,17 @@ const insertDocuments = function(db, callback, data) {
 //   { "title": "title 5", "description": "desc 5", "date": "date 5" }
 // ]
 
+
+const findDocuments = function(db, callback) {
+  const events = db.collection('events');
+  events.find({
+    // "_id": new Mongo.ObjectID(matcher)
+  }).toArray((err, res) => {
+    console.log('errors from find', err);
+    console.log('res from find', res);
+  });
+}
+
 const updateDocuments = function(db, callback, matcher, data) {
   const events = db.collection('events');
   events.updateOne({
@@ -60,6 +71,7 @@ const deleteDocuments = (db, callback, matcher) => {
 
 module.exports = {
   insertDocuments,
+  findDocuments,
   updateDocuments,
   deleteDocuments
 };

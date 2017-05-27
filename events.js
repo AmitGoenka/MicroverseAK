@@ -23,7 +23,10 @@ for(let i = 0; i < 10; i++) {
 }
 
 router.get('/', (request, response, next) => {
-  response.send(arr);
+  console.log("GET EVERYTHING");
+  db.find();
+  // .then();
+  // response.send(arr);
 });
 
 router.get('/:id', (request, response, next) => {

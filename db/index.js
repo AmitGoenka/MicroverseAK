@@ -33,6 +33,14 @@ const insert = function(data) {
   })
 }
 
+const find = function() {
+  con(db => {
+    model.findDocuments(db, function() {
+      db.close();
+    });
+  })
+}
+
 const update = function(matcher, data) {
   con(db => {
     model.updateDocuments(db, function() {
@@ -52,6 +60,7 @@ const deleteEvents = function(matcher) {
 
 module.exports = {
   insert,
+  find,
   update,
   deleteEvents
 }
