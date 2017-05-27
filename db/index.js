@@ -25,6 +25,17 @@ const con = (action) => {
   });
 }
 
+const conPromise = () => {
+  return new Promise((resolve, reject) => {
+    MongoClient.connect(dbUrl, function(err, db) {
+      assert.equal(null, err);
+      console.log('Connected succesfully to database');
+      if(err) reject(err);
+      else resolve(db);
+    });
+  })
+}
+
 const insert = function(data) {
   con(db => {
     model.insertDocuments(db, function() {
@@ -34,11 +45,24 @@ const insert = function(data) {
 }
 
 const find = function() {
-  con(db => {
-    model.findDocuments(db, function() {
+  var f = db => {
+    return model.findDocuments(db, function() {
       db.close();
-    });
-  })
+    })
+  };
+  return con(f);
+}
+
+const findPromise = function() {
+  return conPromise()
+    .then(db => {
+      return model.findDocuments(db)
+        .then((res) => {
+          db.close();
+          return res;
+        });
+    })
+    .catch(console.log);
 }
 
 const update = function(matcher, data) {
@@ -61,6 +85,7 @@ const deleteEvents = function(matcher) {
 module.exports = {
   insert,
   find,
+  findPromise,
   update,
   deleteEvents
 }

@@ -23,14 +23,22 @@ const insertDocuments = function(db, callback, data) {
 // ]
 
 
-const findDocuments = function(db, callback) {
+const findDocuments = function(db) {
   const events = db.collection('events');
-  events.find({
-    // "_id": new Mongo.ObjectID(matcher)
-  }).toArray((err, res) => {
-    console.log('errors from find', err);
-    console.log('res from find', res);
+
+  const prom = new Promise((resolve, reject) => {
+
+    events.find({
+      // "_id": new Mongo.ObjectID(matcher)
+    }).toArray((err, res) => {
+      console.log('errors from find', err);
+      console.log('res from find', res);
+      resolve(res);
+    });
+
   });
+
+  return prom;
 }
 
 const updateDocuments = function(db, callback, matcher, data) {

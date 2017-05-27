@@ -24,9 +24,11 @@ for(let i = 0; i < 10; i++) {
 
 router.get('/', (request, response, next) => {
   console.log("GET EVERYTHING");
-  db.find();
-  // .then();
-  response.send("Response sent");
+  db.findPromise()
+  .then(res => {
+    response.send(res)
+  })
+  .catch(response.send);
 });
 
 router.get('/:id', (request, response, next) => {
