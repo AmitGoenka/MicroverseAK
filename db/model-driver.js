@@ -24,14 +24,6 @@ const insertDocuments = function(db, callback, data) {
 
 const updateDocuments = function(db, callback, matcher, data) {
   const events = db.collection('events');
-
-  // events.findOne({
-  //   "_id": `5921a787c75ea1e4d7106a36`
-  // }, console.log);
-
-  console.log(matcher);
-
-  // "_id": new Mongo.ObjectID(matcher)
   events.updateOne({
     "_id": matcher
   },{
@@ -42,14 +34,32 @@ const updateDocuments = function(db, callback, matcher, data) {
   function(err, result) {
     assert.equal(err, null);
     console.log(result);
-    // assert.equal(data.length, result.result.n);
-    // assert.equal(data.length, result.ops.length);
     console.log('Updated events successfully');
     callback(result);
   });
 }
 
+const deleteDocuments = (db, callback, matcher) => {
+  const events = db.collection('events');
+
+  // events.find({
+  //   "_id": new Mongo.ObjectID(matcher)
+  // }).toArray((err, res) => {
+  //   console.log('erros from find', err);
+  //   console.log('res from find', res);
+  // });
+
+  events.findOneAndDelete({
+    "_id": new Mongo.ObjectID(matcher)
+  }, (err, result) => {
+    assert.equal(err, null);
+    console.log('Deleted events successfully');
+    callback(result);
+  })
+}
+
 module.exports = {
   insertDocuments,
-  updateDocuments
+  updateDocuments,
+  deleteDocuments
 };

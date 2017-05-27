@@ -65,15 +65,13 @@ router.put('/:id', (request, response, next) => {
   const req = request.body;
 
   db.update(id, req);
-  response.send("Response sent");
-
+  response.send("Event updated");
 });
 
 router.delete('/:id', (request, response, next) => {
-  const id = parseInt(request.params.id);
-  _.remove(arr, x => x.id === id)
-  response.send(arr);
+  console.log('id ', request.params.id);
+  db.deleteEvents(request.params.id);
+  response.send("Deleted");
 });
-
 
 module.exports = router;

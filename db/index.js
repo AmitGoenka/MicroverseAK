@@ -17,7 +17,7 @@ const assert = require('assert');
 
 const dbUrl = 'mongodb://localhost:27017/microverse';
 
-var con = (action) => {
+const con = (action) => {
   MongoClient.connect(dbUrl, function(err, db) {
     assert.equal(null, err);
     console.log('Connected succesfully to database');
@@ -25,23 +25,33 @@ var con = (action) => {
   });
 }
 
-var insert = function(data) {
-  con((db) => {
+const insert = function(data) {
+  con(db => {
     model.insertDocuments(db, function() {
       db.close();
     }, data);
   })
 }
 
-var update = function(matcher, data) {
-  con((db) => {
+const update = function(matcher, data) {
+  con(db => {
     model.updateDocuments(db, function() {
       db.close();
     }, matcher, data);
   })
 }
 
+const deleteEvents = function(matcher) {
+  con(db => {
+    // Call delete documents here
+    model.deleteDocuments(db, function() {
+      db.close();
+    }, matcher)
+  })
+}
+
 module.exports = {
   insert,
-  update
+  update,
+  deleteEvents
 }
