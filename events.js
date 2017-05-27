@@ -26,7 +26,7 @@ router.get('/', (request, response, next) => {
   console.log("GET EVERYTHING");
   db.find();
   // .then();
-  // response.send(arr);
+  response.send("Response sent");
 });
 
 router.get('/:id', (request, response, next) => {
