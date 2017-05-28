@@ -49,40 +49,38 @@ const findDocuments = function(db, matcher) {
   return prom;
 }
 
-const updateDocuments = function(db, callback, matcher, data) {
+const updateDocuments = function(db, matcher, data) {
   const events = db.collection('events');
-  events.updateOne({
-    "_id": matcher
-  },{
-    $set: {
-      "title": data.title
-    }
-  },
-  function(err, result) {
-    assert.equal(err, null);
-    console.log(result);
-    console.log('Updated events successfully');
-    callback(result);
-  });
+  const prom = new Promise((resolve, reject) => {
+    events.updateOne({
+      "_id": new Mongo.ObjectID(matcher)
+    },{
+      $set: {
+        "title": data.title
+      }
+    },
+    function(err, res) {
+      console.log('Updated events successfully');
+      if(err) reject(err);
+      else resolve(res);
+    });
+  })
+  return prom;
 }
 
-const deleteDocuments = (db, callback, matcher) => {
+const deleteDocuments = (db, matcher) => {
   const events = db.collection('events');
-
-  // events.find({
-  //   "_id": new Mongo.ObjectID(matcher)
-  // }).toArray((err, res) => {
-  //   console.log('erros from find', err);
-  //   console.log('res from find', res);
-  // });
-
-  events.findOneAndDelete({
-    "_id": new Mongo.ObjectID(matcher)
-  }, (err, result) => {
-    assert.equal(err, null);
-    console.log('Deleted events successfully');
-    callback(result);
-  })
+  const prom = new Promise((resolve, reject) => {
+    events.findOneAndDelete({
+      "_id": new Mongo.ObjectID(matcher)
+    }, (err, res) => {
+      assert.equal(err, null);
+      console.log('Deleted events successfully');
+      if(err) reject(err);
+      else resolve(res);
+    })
+  });
+  return prom;
 }
 
 module.exports = {

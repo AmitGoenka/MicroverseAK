@@ -74,7 +74,7 @@ const findPromise = function(matcher) {
   return conPromise()
     .then(db => {
       return model.findDocuments(db, matcher)
-        .then((res) => {
+        .then(res => {
           db.close();
           return res;
         });
@@ -82,26 +82,50 @@ const findPromise = function(matcher) {
     .catch(err => { return err; });
 }
 
-const update = function(matcher, data) {
-  con(db => {
-    model.updateDocuments(db, function() {
-      db.close();
-    }, matcher, data);
-  })
+// const update = function(matcher, data) {
+//   con(db => {
+//     model.updateDocuments(db, function() {
+//       db.close();
+//     }, matcher, data);
+//   })
+// }
+
+const updatePromise = function(matcher, data) {
+  return conPromise()
+    .then(db => {
+      return model.updateDocuments(db, matcher, data)
+        .then(res => {
+          db.close();
+          return res;
+        });
+    })
+    .catch(err => { return err; });
 }
 
-const deleteEvents = function(matcher) {
-  con(db => {
-    // Call delete documents here
-    model.deleteDocuments(db, function() {
-      db.close();
-    }, matcher)
-  })
+// const deleteEvents = function(matcher) {
+//   con(db => {
+//     // Call delete documents here
+//     model.deleteDocuments(db, function() {
+//       db.close();
+//     }, matcher)
+//   })
+// }
+
+const deletePromise = function(matcher) {
+  return conPromise()
+    .then(db => {
+      return model.deleteDocuments(db, matcher)
+        .then(res => {
+          db.close();
+          return res;
+        });
+    })
+    .catch(err => { return err; });
 }
 
 module.exports = {
   insertPromise,
   findPromise,
-  update,
-  deleteEvents
+  updatePromise,
+  deletePromise
 }

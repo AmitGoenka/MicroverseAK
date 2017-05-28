@@ -16,12 +16,6 @@ function MongoEvent(title, desc, date) {
   this.date = date;
 }
 
-let arr = [];
-
-for(let i = 0; i < 10; i++) {
-  arr.push(new Event(i, `title ` + i, 'desc ' + i, new Date().toString()));
-}
-
 router.get('/', (request, response, next) => {
   console.log("GET EVERYTHING");
   db.findPromise()
@@ -47,9 +41,7 @@ router.post('/', (request, response, next) => {
   newEventArray.push(newEvent);
 
   db.insertPromise(newEventArray)
-  .then(res => {
-    response.send(res);
-  })
+  .then(res => response.send(res))
   .catch(next);
 });
 
@@ -65,19 +57,21 @@ router.put('/:id', (request, response, next) => {
   //   }
   // });
 
-  console.log("PUT")
+  console.log("PUT");
 
   const id = request.params.id;
   const req = request.body;
 
-  db.update(id, req);
-  response.send("Event updated");
+  db.updatePromise(id, req)
+    .then(res => response.send(res))
+    .catch(next);
 });
 
 router.delete('/:id', (request, response, next) => {
-  console.log('id ', request.params.id);
-  db.deleteEvents(request.params.id);
-  response.send("Deleted");
+  console.log('DELETE');
+  db.deletePromise(request.params.id)
+    .then(res => response.send(res))
+    .catch(next);
 });
 
 module.exports = router;
