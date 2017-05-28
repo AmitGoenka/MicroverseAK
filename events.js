@@ -32,10 +32,12 @@ router.get('/', (request, response, next) => {
 });
 
 router.get('/:id', (request, response, next) => {
-  const id = parseInt(request.params.id);
-  response.send(arr.filter(x => {
-    return x.id === id;
-  }));
+  console.log("GET ONLY ONE");
+  db.findPromise(request.params.id)
+  .then(res => {
+    response.send(res);
+  })
+  .catch(next);
 });
 
 router.post('/', (request, response, next) => {

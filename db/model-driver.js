@@ -27,12 +27,18 @@ const insertDocuments = function(db, data) {
 // ]
 
 
-const findDocuments = function(db) {
+const findDocuments = function(db, matcher) {
+  const criteria = matcher ? {
+    "_id": new Mongo.ObjectID(matcher)
+  } : {};
+
   const events = db.collection('events');
   const prom = new Promise((resolve, reject) => {
-    events.find({
-      // "_id": new Mongo.ObjectID(matcher)
-    }).toArray((err, res) => {
+    events.find(criteria)
+    // {
+    //   "_id": new Mongo.ObjectID(matcher)
+    // }
+    .toArray((err, res) => {
       console.log('errors from find', err);
       console.log('res from find', res);
       if(err) reject(err);

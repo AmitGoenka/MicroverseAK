@@ -70,10 +70,10 @@ const insertPromise = function(data) {
 //   return con(f);
 // }
 
-const findPromise = function() {
+const findPromise = function(matcher) {
   return conPromise()
     .then(db => {
-      return model.findDocuments(db)
+      return model.findDocuments(db, matcher)
         .then((res) => {
           db.close();
           return res;
