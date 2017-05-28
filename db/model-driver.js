@@ -1,17 +1,21 @@
 const assert = require('assert');
 const Mongo = require('mongodb');
 
-const insertDocuments = function(db, callback, data) {
+const insertDocuments = function(db, data) {
   const events = db.collection('events');
-  events.insertMany(data,
-  function(err, result) {
-    assert.equal(err, null);
-    console.log(result);
-    assert.equal(data.length, result.result.n);
-    assert.equal(data.length, result.ops.length);
-    console.log('Inserted events successfully');
-    callback(result);
-  });
+  const prom = new Promise((resolve, reject) => {
+    events.insertMany(data,
+      function(err, result) {
+        assert.equal(err, null);
+        console.log(result);
+        assert.equal(data.length, result.result.n);
+        assert.equal(data.length, result.ops.length);
+        console.log('Inserted events successfully');
+        if(err) reject(err);
+        else resolve(result.ops);
+      });
+  })
+  return prom;
 }
 
 // [
@@ -25,21 +29,17 @@ const insertDocuments = function(db, callback, data) {
 
 const findDocuments = function(db) {
   const events = db.collection('events');
-
   const prom = new Promise((resolve, reject) => {
-
     events.find({
       // "_id": new Mongo.ObjectID(matcher)
     }).toArray((err, res) => {
       console.log('errors from find', err);
       console.log('res from find', res);
-      // if(err) reject(err);
-      // else resolve(res);
-      reject("TESTING ERROR WITH EXPRESS")
+      if(err) reject(err);
+      else resolve(res);
+      // reject("TESTING ERROR WITH EXPRESS")
     });
-
   });
-
   return prom;
 }
 

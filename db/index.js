@@ -17,14 +17,16 @@ const assert = require('assert');
 
 const dbUrl = 'mongodb://localhost:27017/microverse';
 
-const con = (action) => {
-  MongoClient.connect(dbUrl, function(err, db) {
-    assert.equal(null, err);
-    console.log('Connected succesfully to database');
-    action(db);
-  });
-}
+// const con = (action) => {
+//   MongoClient.connect(dbUrl, function(err, db) {
+//     assert.equal(null, err);
+//     console.log('Connected succesfully to database');
+//     action(db);
+//   });
+// }
 
+
+// CONNECT
 const conPromise = () => {
   return new Promise((resolve, reject) => {
     MongoClient.connect(dbUrl, function(err, db) {
@@ -37,22 +39,36 @@ const conPromise = () => {
   })
 }
 
-const insert = function(data) {
-  con(db => {
-    model.insertDocuments(db, function() {
-      db.close();
-    }, data);
-  })
+// const insert = function(data) {
+//   con(db => {
+//     model.insertDocuments(db, function() {
+//       db.close();
+//     }, data);
+//   })
+// }
+
+// INSERT
+const insertPromise = function(data) {
+  return conPromise()
+    .then(db => {
+      return model.insertDocuments(db, data)
+      .then(res => {
+        console.log("from index.js ", res)
+        db.close();
+        return res;
+      })
+    })
+    .catch(err => { return err; });
 }
 
-const find = function() {
-  var f = db => {
-    return model.findDocuments(db, function() {
-      db.close();
-    })
-  };
-  return con(f);
-}
+// const find = function() {
+//   var f = db => {
+//     return model.findDocuments(db, function() {
+//       db.close();
+//     })
+//   };
+//   return con(f);
+// }
 
 const findPromise = function() {
   return conPromise()
@@ -84,8 +100,7 @@ const deleteEvents = function(matcher) {
 }
 
 module.exports = {
-  insert,
-  find,
+  insertPromise,
   findPromise,
   update,
   deleteEvents

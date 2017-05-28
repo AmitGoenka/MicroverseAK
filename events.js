@@ -26,7 +26,7 @@ router.get('/', (request, response, next) => {
   console.log("GET EVERYTHING");
   db.findPromise()
   .then(res => {
-    response.send(res)
+    response.send(res);
   })
   .catch(next);
 });
@@ -39,17 +39,16 @@ router.get('/:id', (request, response, next) => {
 });
 
 router.post('/', (request, response, next) => {
-  console.log("post")
-  // newEvent = new Event(request.body.id, request.body.title, request.body.description, request.body.date);
-  // arr.push(newEvent);
-  // response.send(arr[arr.length - 1]);
+  console.log("POST")
   var newEvent = new MongoEvent(request.body.title, request.body.description, request.body.date);
   var newEventArray = [];
   newEventArray.push(newEvent);
-  console.log(newEventArray);
 
-  db.insert(newEventArray);
-  response.send("Response sent");
+  db.insertPromise(newEventArray)
+  .then(res => {
+    response.send(res);
+  })
+  .catch(next);
 });
 
 router.put('/:id', (request, response, next) => {
