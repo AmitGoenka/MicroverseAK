@@ -77,7 +77,7 @@ const deleteDocuments = (db, matcher) => {
       assert.equal(err, null);
       console.log('Deleted events successfully');
       if(err) reject(err);
-      else resolve(res);
+      else resolve(res.value);
     })
   });
   return prom;
