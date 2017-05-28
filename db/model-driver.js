@@ -33,7 +33,9 @@ const findDocuments = function(db) {
     }).toArray((err, res) => {
       console.log('errors from find', err);
       console.log('res from find', res);
-      resolve(res);
+      // if(err) reject(err);
+      // else resolve(res);
+      reject("TESTING ERROR WITH EXPRESS")
     });
 
   });

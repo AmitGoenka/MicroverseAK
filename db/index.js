@@ -32,6 +32,7 @@ const conPromise = () => {
       console.log('Connected succesfully to database');
       if(err) reject(err);
       else resolve(db);
+      // reject("TESTING ERROR");
     });
   })
 }
@@ -62,7 +63,7 @@ const findPromise = function() {
           return res;
         });
     })
-    .catch(console.log);
+    .catch(err => { return err; });
 }
 
 const update = function(matcher, data) {

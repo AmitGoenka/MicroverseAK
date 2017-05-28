@@ -28,7 +28,7 @@ router.get('/', (request, response, next) => {
   .then(res => {
     response.send(res)
   })
-  .catch(response.send);
+  .catch(next);
 });
 
 router.get('/:id', (request, response, next) => {
