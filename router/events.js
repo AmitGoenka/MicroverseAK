@@ -18,16 +18,31 @@ function MongoEvent(title, desc, date) {
 
 router.get('/', (request, response, next) => {
   console.log("GET EVERYTHING");
-  db.findPromise()
+  if (request.query) next();
+  else {
+    db.findPromise()
+    .then(res => {
+      response.send(res);
+    })
+    .catch(next);
+  }
+});
+
+router.get('/:id', (request, response, next) => {
+  console.log("GET ONLY ONE");
+  const criteria = {'_id': request.params.id};
+  db.findPromise(criteria)
   .then(res => {
     response.send(res);
   })
   .catch(next);
 });
 
-router.get('/:id', (request, response, next) => {
-  console.log("GET ONLY ONE");
-  db.findPromise(request.params.id)
+router.get('/', (request, response, next) => {
+  console.log("SEARCH BY TITLE");
+  const criteria = {'title': request.query.title};
+  console.log(criteria);
+  db.findPromise(criteria)
   .then(res => {
     response.send(res);
   })

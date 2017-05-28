@@ -26,25 +26,30 @@ const insertDocuments = function(db, data) {
 //   { "title": "title 5", "description": "desc 5", "date": "date 5" }
 // ]
 
+const getSearchCriteria = (matcher) => {
+  if (!matcher) return {};
+  if (matcher._id) {
+    return {'_id': new Mongo.ObjectID(matcher._id)};
+  } else if (matcher.title) {
+    return {'title': matcher.title};
+  } else {
+    return {};
+  }
+}
 
 const findDocuments = function(db, matcher) {
-  const criteria = matcher ? {
-    "_id": new Mongo.ObjectID(matcher)
-  } : {};
-
+  const criteria = getSearchCriteria(matcher);
+  console.log('criteria: ', criteria);
   const events = db.collection('events');
   const prom = new Promise((resolve, reject) => {
     events.find(criteria)
-    // {
-    //   "_id": new Mongo.ObjectID(matcher)
-    // }
-    .toArray((err, res) => {
-      console.log('errors from find', err);
-      console.log('res from find', res);
-      if(err) reject(err);
-      else resolve(res);
-      // reject("TESTING ERROR WITH EXPRESS")
-    });
+      .toArray((err, res) => {
+        console.log('errors from find', err);
+        console.log('res from find', res);
+        if(err) reject(err);
+        else resolve(res);
+        // reject("TESTING ERROR WITH EXPRESS")
+      });
   });
   return prom;
 }
