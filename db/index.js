@@ -21,22 +21,34 @@ const conPromise = () => {
 
     db.on('error', () => {
       console.error.bind(console, 'connection error:');
-      reject();
+      reject(db);
     });
 
     db.once('open', () => {
       console.log('Connected to database already');
-      resolve();
+      resolve(db);
     });
   })
 }
 
+const getSearchCriteria = matcher => {
+  if (!matcher) return {};
+  if (matcher._id) {
+    return {'_id': matcher._id};
+  } else if (matcher.title) {
+    return {'title': matcher.title};
+  } else {
+    return {};
+  }
+}
+
 const findPromise = function(matcher) {
   return conPromise()
-    .then(() => {
-      return Events.find()
+    .then(db => {
+      return Events.find(getSearchCriteria(matcher))
         .exec((err, results) => {
           console.log(results);
+          db.close();
           return results;
         });
     })
