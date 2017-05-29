@@ -71,7 +71,22 @@ const insertPromise = function(data) {
     .catch(err => { return err; });
 }
 
+const updatePromise = function(matcher, data) {
+  return conPromise()
+    .then(db => {
+      return Events.update({"_id": matcher}, data, (err, results) => {
+        // console.log("error", err);
+        // console.log("results", results);
+        console.log("inside update", results);
+        db.close();
+        return results;
+      });
+    })
+    .catch(err => { return err; });
+}
+
 module.exports = {
   findPromise,
-  insertPromise
+  insertPromise,
+  updatePromise
 };
