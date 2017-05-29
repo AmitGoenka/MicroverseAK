@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
-const db = require('../db/index');
+const db = require('../db/index.js');
 
 function Event(id, title, desc, date) {
   this.id = id;
@@ -18,7 +18,6 @@ function MongoEvent(title, desc, date) {
 
 router.get('/', (request, response, next) => {
   console.log("GET EVERYTHING");
-  console.log(request.query);
   if (request.query) next();
   else {
     db.findPromise()
