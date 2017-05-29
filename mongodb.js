@@ -30,3 +30,15 @@ db.events.getIndexes()
 
 // 1 Ascending, -1 Descending
 db.events.createIndex({"date": 1})
+
+// --- Index Section ---
+// Get Indexes:
+db.events.getIndexes()
+// Search Entries:
+db.events.find({"title": "title 1"})
+// Get Execution Plan:
+db.events.find({"title": "title 1"}).explain("executionStats")
+// Create Index:
+db.events.createIndex( {"title": 1} )
+// Get Execution Plan Again:
+db.events.find({"title": "title 1"}).explain("executionStats")
