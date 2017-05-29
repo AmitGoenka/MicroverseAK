@@ -85,8 +85,22 @@ const updatePromise = function(matcher, data) {
     .catch(err => { return err; });
 }
 
+const deletePromise = function(matcher) {
+  return conPromise()
+    .then(db => {
+      return Events.remove({"_id": matcher}, (err, results) => {
+        // console.log("error", err);
+        // console.log("results", results);
+        console.log("inside delete", results);
+        db.close();
+      });
+    })
+    .catch(err => { return err; });
+}
+
 module.exports = {
   findPromise,
   insertPromise,
-  updatePromise
+  updatePromise,
+  deletePromise
 };
