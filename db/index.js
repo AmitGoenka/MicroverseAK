@@ -55,6 +55,23 @@ const findPromise = function(matcher) {
     .catch(err => { return err; });
 }
 
+const insertPromise = function(data) {
+  return conPromise()
+    .then(db => {
+      return Events.create(data, (err, results) => {
+        // console.log("error", err);
+        // console.log("results", results);
+      })
+      .then(results => {
+        console.log("inside create", results);
+        db.close();
+        return results;
+      });
+    })
+    .catch(err => { return err; });
+}
+
 module.exports = {
-  findPromise
+  findPromise,
+  insertPromise
 };
