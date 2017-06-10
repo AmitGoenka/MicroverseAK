@@ -2,18 +2,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const session = require('express-session');
-const flash = require('connect-flash');
+// const session = require('express-session');
+// const flash = require('connect-flash');
 
 const app = express();
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true})); // for parsing application/x-www-form-urlencoded
-app.use(session({secret: 'secret cat', resave: true, saveUninitialized: true}));
-app.use(flash());
+// app.use(session({secret: 'secret cat', resave: true, saveUninitialized: true}));
+// app.use(flash());
 
 app.use(passport.initialize()); // initialize passport
-app.use(passport.session());
+// app.use(passport.session());
 
 app.use('/events', require('./router/events.js'));
 
@@ -50,7 +50,15 @@ function findUser(credentials, action) {
 
 app.get('/login', (req, res, next) => {
   // res.render('local', {message: req.flash('some error we dont know')});
-  res.send(req.flash('some error we dont know'));
+  // res.send(req.flash('some error we dont know'));
+  res.send('some error we dont know');
 });
 
-app.post('/login', passport.authenticate("local", { successRedirect: '/', failureRedirect: '/login', failureFlash: true, session: true}));
+// app.post('/login', passport.authenticate("local", { successRedirect: '/', failureRedirect: '/login', failureFlash: false, session: false}));
+app.post('/login', (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if(err) return next(err);
+    if(!user) res.send(info);
+    res.send(user);
+  })(req, res, next);
+});
