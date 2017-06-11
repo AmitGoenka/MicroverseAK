@@ -34,6 +34,21 @@ describe('/GET', () => {
         done();
       });
   });
+
+  it('event by title', (done) => {
+    var title = 'title something';
+    chai.request(app)
+      .get(`/events?title=${title}`)
+      .then((data) => {
+        expect(data.body[0]).to.not.be.null;
+        expect(data.body[0].title).to.equal(title);
+        done();
+      })
+      .catch(err => {
+        console.log('err: ', err);
+        done();
+      });
+  });
 });
 
 describe('/POST', () => {
