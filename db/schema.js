@@ -7,4 +7,14 @@ var eventsSchema = new Schema({
   date: String
 })
 
-module.exports = eventsSchema;
+var usersSchema = new Schema({
+  username: String,
+  password: String,
+  email: String,
+  fullName: String
+})
+
+module.exports = {
+  eventsSchema,
+  usersSchema
+}

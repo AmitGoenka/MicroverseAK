@@ -1,7 +1,9 @@
-var eventsSchema = require('./schema.js');
+var eventsSchema = require('./schema.js').eventsSchema;
+var usersSchema = require('./schema.js').usersSchema;
 var mongoose = require('mongoose');
 
 var Events = mongoose.model('Events', eventsSchema);
+var Users = mongoose.model('Users', usersSchema);
 //
 // Events.find()
 //   .exec((err, results) => {
@@ -19,4 +21,7 @@ var Events = mongoose.model('Events', eventsSchema);
 // });
 
 
-module.exports = Events;
+module.exports = {
+  Events,
+  Users
+}

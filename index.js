@@ -5,6 +5,7 @@ const passport = require('passport');
 // const session = require('express-session');
 // const flash = require('connect-flash');
 const BasicStrategy = require('passport-http').BasicStrategy;
+const db = require('./db/index');
 
 const app = express();
 
@@ -44,9 +45,18 @@ module.exports = app;
 
 function findUser(credentials, action) {
   if(!credentials) return action("No credentials provided");
-  else if(credentials.username !== "Amit") return action(null, false, {message: 'Incorrect Username'});
-  else if(credentials.password !== "micro") return action(null, false, {message: 'Incorrect Password'});
-  return action(null, credentials);
+  else {
+    return db.findUser(credentials.username)
+    .then(results => {
+      console.log("results", results);
+      if(!results) return action(null, false, {message: "User not found"});
+      else if(credentials.password !== results.password) return action(null, false, {message: 'Incorrect Password'});
+      else return action(null, results);
+    })
+    .catch(err => {
+      return action(err);
+    });
+  }
 }
 
 // ---------------------------------------------------------

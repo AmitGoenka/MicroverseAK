@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-var Events = require('./model.js');
+var Events = require('./model.js').Events;
+var Users = require('./model.js').Users;
 const dbUrl = 'mongodb://localhost/microverse';
 
 // const con = (action) => {
@@ -98,9 +99,28 @@ const deletePromise = function(matcher) {
     .catch(err => { return err; });
 }
 
+//----------------------------------------------------------
+
+// Users
+const findUser = function(username) {
+  console.log("finduser");
+  return conPromise()
+    .then(db => {
+      return Users.find()
+        .exec((err, results) => {
+          console.log("line 111", username, err, results);
+          db.close();
+          return results;
+        });
+    })
+    .catch(err => { return err; });
+}
+
+
 module.exports = {
   findPromise,
   insertPromise,
   updatePromise,
-  deletePromise
+  deletePromise,
+  findUser
 };

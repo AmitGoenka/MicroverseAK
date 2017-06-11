@@ -6,6 +6,7 @@ use <db name>
 
 // Insert a row
 db.events.insertOne({ "title": "title 1", "description": "desc 1", "date": "date 1" })
+db.users.insertOne({ "username": "Amit", "password": "micro", "email": "amit@amit.com", "fullName": "Amit G" })
 
 // Insert many rows
 db.events.insertMany([{ "title": "title 1", "description": "desc 1", "date": "date 1" }, { "title": "title 2", "description": "desc 2", "date": "date 2" }, { "title": "title 3", "description": "desc 3", "date": "date 3" }, { "title": "title 4", "description": "desc 4", "date": "date 4" }, { "title": "title 5", "description": "desc 5", "date": "date 5" }])
