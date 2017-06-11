@@ -103,12 +103,10 @@ const deletePromise = function(matcher) {
 
 // Users
 const findUser = function(username) {
-  console.log("finduser");
   return conPromise()
     .then(db => {
-      return Users.find()
+      return Users.find({"username": username})
         .exec((err, results) => {
-          console.log("line 111", username, err, results);
           db.close();
           return results;
         });

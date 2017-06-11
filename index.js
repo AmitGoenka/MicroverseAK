@@ -49,12 +49,12 @@ function findUser(credentials, action) {
     return db.findUser(credentials.username)
     .then(results => {
       console.log("results", results);
-      if(!results) return action(null, false, {message: "User not found"});
-      else if(credentials.password !== results.password) return action(null, false, {message: 'Incorrect Password'});
-      else return action(null, results);
+      if(!results || results.length === 0) return action(null, false, {message: "User not found"});
+      else if(credentials.password !== results[0].password) return action(null, false, {message: 'Incorrect Password'});
+      else return action(null, results[0]);
     })
     .catch(err => {
-      return action(err);
+      return action(err, false);
     });
   }
 }
@@ -89,7 +89,7 @@ app.post('/login', (req, res, next) => {
       res.status(401).send(err);
     }
     else if(!user) {
-      res.status(403).send();
+      res.status(401).send({"message" : "Incorrect credentials"});
     } else {
       res.send(user);
     }
