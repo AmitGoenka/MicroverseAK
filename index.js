@@ -58,26 +58,28 @@ function findUser(credentials, action) {
 // });
 
 // Passport-HTTP
-const strategy = new BasicStrategy((username, password, done) => {
-  findUser({username: username, password: password}, (err, user, message) => {
-    if(err) return done(err);
-    if(!user) {
-      console.log(message);
-      return done(null, false, message);
-    }
-    return done(null, user);
-  })
-});
-
-passport.use(strategy);
+passport.use(new BasicStrategy((username, password, done) => {
+    findUser({username: username, password: password}, (err, user, message) => {
+      if(err) {
+        return done(err);
+      }
+      if(!user) {
+        console.log(username, password, message);
+        return done(null, false);
+      }
+      return done(null, user);
+    })
+  }
+));
 
 // app.post('/login', passport.authenticate("local", { successRedirect: '/', failureRedirect: '/login', failureFlash: false, session: false}));
 app.post('/login', (req, res, next) => {
-  passport.authenticate("basic", {session: false}, (err, user, info, x, y, z) => {
-    console.log(err, user, info, x, y, z);
-    if(err) return next(err);
-    if(!user) {
-      res.status(403).send(info);
+  passport.authenticate("basic", {session: false}, (err, user) => {
+    if(err) {
+      res.status(401).send(err);
+    }
+    else if(!user) {
+      res.status(403).send();
     } else {
       res.send(user);
     }
